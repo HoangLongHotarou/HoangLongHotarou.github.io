@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] })
   ],
-  base: '/portfolio/',
+  base: '/',
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test-setup.ts'],
