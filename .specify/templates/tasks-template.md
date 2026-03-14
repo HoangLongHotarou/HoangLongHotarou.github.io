@@ -8,7 +8,7 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: Per constitution §IV, unit tests are **REQUIRED** for every React component and custom hook (Vitest + React Testing Library, co-located with the component). The test tasks below follow TDD order: write tests first, confirm they fail, then implement. The only exception is pure CSS changes and static data files, which are covered indirectly by component tests.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
