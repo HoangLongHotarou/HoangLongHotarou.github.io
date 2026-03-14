@@ -17,7 +17,7 @@ Redesign the portfolio's CSS and component structure to be fully responsive acro
 **Project Type**: web-app (SPA, static)  
 **Performance Goals**: FCP < 2 s on 4G; CLS < 0.1  
 **Constraints**: No external CSS framework; must support existing light/dark theme tokens; mobile viewport minimum 375px  
-**Scale/Scope**: Single-page portfolio, 2 routes (Home, System Design)
+**Scale/Scope**: Single-page portfolio, 4 routes (Home, System Design, DevOps Tools, New Updates)
 
 ## Constitution Check
 
@@ -49,15 +49,42 @@ specs/001-responsive-portfolio/
 
 ### Source Code (repository root)
 
+Advanced folder structure adopted per `/speckit.tasks` to align with React best practices and constitution §II (Modularity):
+
 ```text
 src/
-├── App.tsx          # Main app: PROFILE config, routes, theme state
-├── App.css          # Portfolio-specific styles (responsive)
-├── index.css        # Global CSS tokens + reset
-└── main.tsx         # Entry point
+├── assets/
+├── components/
+│   ├── Avatar/          Avatar.tsx · Avatar.test.tsx
+│   ├── Blade/           Blade.tsx · Blade.test.tsx
+│   ├── SkillCard/       SkillCard.tsx · SkillCard.test.tsx
+│   └── ThemeToggle/     ThemeToggle.tsx · ThemeToggle.test.tsx
+├── context/
+│   └── ThemeContext.tsx · ThemeContext.test.tsx
+├── data/
+│   └── profile.ts       # PROFILE constant (was inline in App.tsx)
+├── hooks/
+│   └── useTheme.ts      # Public re-export of useTheme
+├── layouts/
+│   ├── AppShell.tsx     # Topbar + sidebar + main + footer shell
+│   └── AppShell.test.tsx
+├── pages/
+│   ├── ComingSoon/      ComingSoon.tsx  # Placeholder for /devops-tools, /new-updates
+│   ├── Home/            Home.tsx
+│   └── SystemDesign/    SystemDesign.tsx
+├── styles/
+│   ├── app.css          # Portfolio-specific styles (was App.css)
+│   └── index.css        # Global CSS tokens + reset
+├── types/
+│   └── index.ts         # Skill, ProfileData interfaces
+├── utils/
+│   ├── helpers.ts       # getInitials helper
+│   └── iconMap.tsx      # Skill name → developer-icon SVG map
+├── App.tsx              # Composition root only (4 routes)
+└── main.tsx
 ```
 
-**Structure Decision**: Single-project web app. All portfolio code lives in `src/`. No backend. CSS is co-located with components (no CSS Modules needed at this scale).
+**Structure Decision**: Advanced single-project layout. All portfolio code lives in `src/`. No backend. CSS lives in `src/styles/`; no CSS Modules needed at this scale. Test files co-located with their components (constitution §IV).
 
 ## Complexity Tracking
 
