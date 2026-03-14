@@ -33,9 +33,13 @@
 
 ## Decision 3: Navigation on Mobile
 
-**Decision**: No hamburger menu needed. The portfolio has only two routes (Home, System Design). A simple inline link in the header suffices on mobile.
+**Decision (revised)**: Left sidebar with hamburger toggle on mobile. ~~No hamburger menu needed.~~
 
-**Rationale**: Adding a hamburger menu for 2 routes introduces unnecessary complexity (Principle I). A compact header with stacked text + link is cleaner.
+**Rationale**: The original decision rejected a hamburger menu for a 2-route portfolio (Principle I — Simplicity). During implementation the route count grew to 4 and a persistent sidebar navigation pattern was adopted for better UX (FR-9). At 4+ categorised routes a sidebar clearly communicates structure. A hamburger button is shown only on viewports < 768 px where the sidebar is hidden by default; on desktop the sidebar is always visible with no extra affordance required.
+
+**Alternatives reconsidered**:
+- Inline header links — rejected at 4 routes; clutters the topbar and does not communicate hierarchy.
+- Drawer overlay only (no sidebar on desktop) — rejected; sidebar provides persistent orientation on desktop without extra interaction cost.
 
 ---
 

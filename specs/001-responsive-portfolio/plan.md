@@ -17,7 +17,7 @@ Redesign the portfolio's CSS and component structure to be fully responsive acro
 **Project Type**: web-app (SPA, static)  
 **Performance Goals**: FCP < 2 s on 4G; CLS < 0.1  
 **Constraints**: No external CSS framework; must support existing light/dark theme tokens; mobile viewport minimum 375px  
-**Scale/Scope**: Single-page portfolio, 2 routes (Home, System Design)
+**Scale/Scope**: Single-page portfolio, 4 routes (Home, System Design, DevOps Tools, New Updates)
 
 ## Constitution Check
 
@@ -66,8 +66,10 @@ src/
 ├── hooks/
 │   └── useTheme.ts      # Public re-export of useTheme
 ├── layouts/
-│   └── AppShell.tsx     # Topbar + main + footer shell
+│   ├── AppShell.tsx     # Topbar + sidebar + main + footer shell
+│   └── AppShell.test.tsx
 ├── pages/
+│   ├── ComingSoon/      ComingSoon.tsx  # Placeholder for /devops-tools, /new-updates
 │   ├── Home/            Home.tsx
 │   └── SystemDesign/    SystemDesign.tsx
 ├── styles/
@@ -76,8 +78,9 @@ src/
 ├── types/
 │   └── index.ts         # Skill, ProfileData interfaces
 ├── utils/
-│   └── helpers.ts       # getInitials helper
-├── App.tsx              # Composition root only (≤ 30 lines)
+│   ├── helpers.ts       # getInitials helper
+│   └── iconMap.tsx      # Skill name → developer-icon SVG map
+├── App.tsx              # Composition root only (4 routes)
 └── main.tsx
 ```
 
