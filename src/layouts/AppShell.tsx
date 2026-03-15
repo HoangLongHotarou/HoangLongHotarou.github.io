@@ -1,22 +1,31 @@
 import { useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
+import {
+  Home as HomeIcon,
+  Layers,
+  GitBranch,
+  Wrench,
+  Bell,
+  type LucideIcon,
+} from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle';
 import { PROFILE } from '../data/profile';
 
-type NavLeaf = { type: 'link'; label: string; to: string };
-type NavGroup = { type: 'group'; label: string; children: NavLeaf[] };
+type NavLeaf = { type: 'link'; label: string; to: string; icon?: LucideIcon };
+type NavGroup = { type: 'group'; label: string; icon?: LucideIcon; children: NavLeaf[] };
 type NavItem = NavLeaf | NavGroup;
 
 const NAV: NavItem[] = [
-  { type: 'link', label: 'Home', to: '/' },
+  { type: 'link', label: 'Home', to: '/', icon: HomeIcon },
   {
     type: 'group',
     label: 'Categories',
+    icon: Layers,
     children: [
-      { type: 'link', label: 'System Design', to: '/system-design' },
-      { type: 'link', label: 'DevOps Tools', to: '/devops-tools' },
-      { type: 'link', label: 'New Updates', to: '/new-updates' },
+      { type: 'link', label: 'System Design', to: '/system-design', icon: GitBranch },
+      { type: 'link', label: 'DevOps Tools', to: '/devops-tools', icon: Wrench },
+      { type: 'link', label: 'New Updates', to: '/new-updates', icon: Bell },
     ],
   },
 ];
@@ -50,6 +59,7 @@ export default function AppShell() {
                       }
                       onClick={() => setSidebarOpen(false)}
                     >
+                      {item.icon && <item.icon size={16} className="sidebar__icon" aria-hidden="true" />}
                       {item.label}
                     </NavLink>
                   </li>
@@ -60,7 +70,10 @@ export default function AppShell() {
                       onClick={() => toggleGroup(item.label)}
                       aria-expanded={!!expanded[item.label]}
                     >
-                      <span>{item.label}</span>
+                      <span className="sidebar__group-label">
+                        {item.icon && <item.icon size={16} className="sidebar__icon" aria-hidden="true" />}
+                        {item.label}
+                      </span>
                       <span className={`sidebar__chevron${expanded[item.label] ? ' sidebar__chevron--open' : ''}`}>
                         ›
                       </span>
@@ -76,6 +89,7 @@ export default function AppShell() {
                               }
                               onClick={() => setSidebarOpen(false)}
                             >
+                              {child.icon && <child.icon size={14} className="sidebar__icon" aria-hidden="true" />}
                               {child.label}
                             </NavLink>
                           </li>

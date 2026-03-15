@@ -4,6 +4,8 @@ import { ThemeProvider } from '../context/ThemeContext';
 import AppShell from './AppShell';
 import { describe, expect, it } from 'vitest';
 
+// lucide-react renders real SVG elements in jsdom — no mock needed.
+
 function renderShell() {
   return render(
     <ThemeProvider>
@@ -61,5 +63,23 @@ describe('AppShell', () => {
     fireEvent.click(groupBtn);
     expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByText('System Design')).not.toBeInTheDocument();
+  });
+
+  it('Home link contains an SVG icon', () => {
+    renderShell();
+    const homeLink = screen.getByRole('link', { name: /home/i });
+    expect(homeLink.querySelector('svg')).toBeInTheDocument();
+  });
+
+  it('System Design child link contains an SVG icon', () => {
+    renderShell();
+    const sdLink = screen.getByRole('link', { name: /system design/i });
+    expect(sdLink.querySelector('svg')).toBeInTheDocument();
+  });
+
+  it('Categories group button contains an SVG icon', () => {
+    renderShell();
+    const groupBtn = screen.getByRole('button', { name: /categories/i });
+    expect(groupBtn.querySelector('svg')).toBeInTheDocument();
   });
 });

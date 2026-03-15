@@ -12,3 +12,11 @@ export interface ProfileData {
   skills: Skill[];
   categories: string[];
 }
+
+export interface Update {
+  slug: string;
+  title: string;
+  date: string;
+  summary: string;
+  content: string;
+}

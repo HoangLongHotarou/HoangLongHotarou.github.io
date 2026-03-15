@@ -1,9 +1,7 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: Markdown-Driven Updates Page
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
-
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
+**Branch**: `main` | **Date**: 2026-03-14 | **Spec**: [spec.md](spec.md)
+**Input**: Feature specification from `/specs/main/spec.md`
 
 ## Summary
 

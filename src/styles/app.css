@@ -185,7 +185,9 @@
 }
 
 .sidebar__link {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 8px 20px;
   color: var(--text);
   text-decoration: none;
@@ -193,6 +195,22 @@
   font-weight: 500;
   border-left: 3px solid transparent;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.sidebar__icon {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.sidebar__link:hover .sidebar__icon,
+.sidebar__link--active .sidebar__icon {
+  opacity: 1;
+}
+
+.sidebar__group-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .sidebar__link:hover {
@@ -534,4 +552,159 @@
   text-align: center;
   font-size: var(--font-size-xs);
   color: var(--text);
+}
+
+/* ── Updates List ────────────────────────────────────────────────────────── */
+.update-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.update-card {
+  display: block;
+  padding: 20px 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+
+.update-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent-border);
+}
+
+.update-card:focus-visible {
+  outline: 2px solid var(--highlight);
+  outline-offset: 2px;
+}
+
+.update-card__date {
+  font-size: var(--font-size-xs);
+  color: var(--text);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.update-card__title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 6px 0 8px;
+}
+
+.update-card__summary {
+  font-size: var(--font-size-sm);
+  color: var(--text);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Update Detail ───────────────────────────────────────────────────────── */
+.update-detail__back {
+  display: inline-flex;
+  align-items: center;
+  color: var(--highlight);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.update-detail__back:hover {
+  opacity: 0.75;
+}
+
+.update-detail__back:focus-visible {
+  outline: 2px solid var(--highlight);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.update-detail__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 32px;
+}
+
+.update-detail__body {
+  line-height: 1.8;
+  color: var(--text);
+  max-width: 720px;
+}
+
+.update-detail__body h1,
+.update-detail__body h2,
+.update-detail__body h3 {
+  color: var(--text-h);
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+.update-detail__body p {
+  margin-bottom: 1em;
+}
+
+.update-detail__body code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.875em;
+  font-family: var(--mono);
+}
+
+.update-detail__body pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.update-detail__body pre code {
+  background: none;
+  padding: 0;
+}
+
+/* When react-syntax-highlighter renders inside update-detail__body, it wraps
+   output in its own <div> (PreTag="div") with inline styles. Reset our <pre>
+   and <code> rules on those containers so they do not double-style. */
+.update-detail__body > div[class*="language-"],
+.update-detail__body > div[style] {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin-bottom: 1.5em;
+}
+
+/* The SyntaxHighlighter root element already carries its own rounded border;
+   let it own all spacing.  Only reset the inner <code> wrapper. */
+.update-detail__body div[class*="language-"] code,
+.update-detail__body div[style] code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+.update-detail__body ul,
+.update-detail__body ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.update-detail__body a {
+  color: var(--highlight);
+}
+
+.update-detail__body blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 16px;
+  margin: 0;
+  font-style: italic;
 }
