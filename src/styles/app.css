@@ -99,7 +99,6 @@
 
 /* ── Theme Toggle ───────────────────────────────────────────────────────── */
 .theme-toggle {
-  margin-left: auto;
   background: var(--accent-bg);
   border: 1px solid var(--accent-border);
   border-radius: 8px;
@@ -552,6 +551,7 @@
   max-width: 320px;
   display: flex;
   align-items: center;
+  margin-left: auto;
 }
 
 .search-box__icon {
