@@ -20,3 +20,10 @@ export interface Update {
   summary: string;
   content: string;
 }
+
+export interface SearchResult {
+  type: 'page' | 'category';
+  label: string;
+  sublabel: string;
+  to: string;
+}

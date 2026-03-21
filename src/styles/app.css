@@ -792,3 +792,126 @@
   margin: 0;
   font-style: italic;
 }
+
+/* ── Update Search ──────────────────────────────────────────────────────── */
+.update-search {
+  margin-bottom: 1.25rem;
+}
+
+.update-search__input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.update-search__input::placeholder {
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.update-search__input:focus {
+  border-color: var(--highlight);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--highlight) 25%, transparent);
+}
+
+/* ── Search empty state ─────────────────────────────────────────────────── */
+.search-empty {
+  color: var(--accent);
+  font-size: 0.95rem;
+  padding: 1.5rem 0;
+}
+
+/* ── Global SearchBox (topbar) ──────────────────────────────────────────── */
+.search-box {
+  position: relative;
+  flex: 1 1 auto;
+  max-width: 28rem;
+}
+
+.search-box__input {
+  width: 100%;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.search-box__input::placeholder {
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.search-box__input:focus {
+  border-color: var(--highlight);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--highlight) 25%, transparent);
+}
+
+.search-box__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 0.25rem 0;
+  list-style: none;
+  margin: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-height: 22rem;
+  overflow-y: auto;
+}
+
+.search-box__group-heading {
+  padding: 0.4rem 0.85rem 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.search-box__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.search-box__item:hover,
+.search-box__item:focus {
+  background: color-mix(in srgb, var(--highlight) 12%, transparent);
+  outline: none;
+}
+
+.search-box__item-label {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.search-box__item-sub {
+  font-size: 0.78rem;
+  color: var(--accent);
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.search-box__item--skill .search-box__item-label {
+  font-style: italic;
+}

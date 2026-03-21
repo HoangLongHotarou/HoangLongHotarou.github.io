@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Avatar from '../../components/Avatar/Avatar';
 import Blade from '../../components/Blade/Blade';
 import SkillCard from '../../components/SkillCard/SkillCard';
 import { PROFILE } from '../../data/profile';
 
 export default function Home() {
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [searchParams] = useSearchParams();
+  const [activeCategory, setActiveCategory] = useState(searchParams.get('category') ?? 'All');
 
-  const filteredSkills =
+  const displayedSkills =
     activeCategory === 'All'
       ? PROFILE.skills
       : PROFILE.skills.filter((s) => s.category === activeCategory);
@@ -41,7 +42,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="skill-grid">
-            {filteredSkills.map((s) => (
+            {displayedSkills.map((s) => (
               <SkillCard key={s.name} name={s.name} />
             ))}
           </div>
