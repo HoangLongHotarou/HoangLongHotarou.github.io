@@ -82,4 +82,9 @@ describe('AppShell', () => {
     const groupBtn = screen.getByRole('button', { name: /categories/i });
     expect(groupBtn.querySelector('svg')).toBeInTheDocument();
   });
+
+  it('topbar contains a SearchBox input', () => {
+    renderShell();
+    expect(screen.getByRole('searchbox', { name: /search site/i })).toBeInTheDocument();
+  });
 });

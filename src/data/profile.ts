@@ -34,5 +34,6 @@ export const PROFILE: ProfileData = {
     { name: 'Observability', category: 'DevOps' },
     { name: 'GitOps', category: 'DevOps' },
     { name: 'GCP', category: 'Cloud' },
+    { name: 'ArgoCD', category: 'DevOps' },
   ],
 };
