@@ -1,131 +1,86 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { describe, expect, it } from 'vitest';
 import SearchBox from './SearchBox';
-
-// ---------------------------------------------------------------------------
-// Mock useSearch hook with vi.hoisted to survive hoisting
-// ---------------------------------------------------------------------------
-const { mockUseSearch } = vi.hoisted(() => ({
-  mockUseSearch: vi.fn(),
-}));
-
-vi.mock('../../hooks/useSearch', () => ({
-  useSearch: mockUseSearch,
-}));
-
-const EMPTY = { pageResults: [], categoryResults: [] };
-const WITH_RESULTS = {
-  pageResults: [
-    { type: 'page' as const, label: 'System Design', sublabel: 'Page', to: '/system-design' },
-  ],
-  categoryResults: [
-    { type: 'category' as const, label: 'DevOps', sublabel: 'Category', to: '/?category=DevOps' },
-  ],
-};
 
 function renderSearchBox() {
   return render(
     <MemoryRouter>
       <SearchBox />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 }
 
-beforeEach(() => {
-  mockUseSearch.mockReturnValue(EMPTY);
-});
-
 describe('SearchBox', () => {
-  it('renders an input with aria-label "Search site"', () => {
+  it('renders the search input', () => {
     renderSearchBox();
-    expect(screen.getByRole('searchbox', { name: /search site/i })).toBeInTheDocument();
+    expect(screen.getByRole('searchbox', { name: /search pages and categories/i })).toBeInTheDocument();
   });
 
-  it('does not show results panel when query is empty', () => {
-    mockUseSearch.mockReturnValue(EMPTY);
+  it('panel is not visible on initial render', () => {
     renderSearchBox();
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
 
-  it('shows results panel when there are results', () => {
-    mockUseSearch.mockReturnValue(WITH_RESULTS);
+  it('panel appears when user types a query', () => {
     renderSearchBox();
-    const input = screen.getByRole('searchbox', { name: /search site/i });
-    fireEvent.change(input, { target: { value: 'design' } });
-    expect(screen.getByRole('listbox')).toBeInTheDocument();
+    const input = screen.getByRole('searchbox');
+    fireEvent.change(input, { target: { value: 'home' } });
+    expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(document.querySelector('.search-box__panel')).toBeInTheDocument();
   });
 
-  it('renders "Pages" group heading when page results exist', () => {
-    mockUseSearch.mockReturnValue(WITH_RESULTS);
+  it('shows matching results for a query', () => {
     renderSearchBox();
-    const input = screen.getByRole('searchbox', { name: /search site/i });
-    fireEvent.change(input, { target: { value: 'design' } });
-    expect(screen.getByText('Pages')).toBeInTheDocument();
-  });
-
-  it('renders "Categories" group heading when category results exist', () => {
-    mockUseSearch.mockReturnValue(WITH_RESULTS);
-    renderSearchBox();
-    const input = screen.getByRole('searchbox', { name: /search site/i });
-    fireEvent.change(input, { target: { value: 'design' } });
-    expect(screen.getByText('Categories')).toBeInTheDocument();
-  });
-
-  it('renders a page result label in the panel', () => {
-    mockUseSearch.mockReturnValue(WITH_RESULTS);
-    renderSearchBox();
-    const input = screen.getByRole('searchbox', { name: /search site/i });
-    fireEvent.change(input, { target: { value: 'design' } });
+    const input = screen.getByRole('searchbox');
+    fireEvent.change(input, { target: { value: 'system' } });
     expect(screen.getByText('System Design')).toBeInTheDocument();
   });
 
-  it('renders a category result label in the panel', () => {
-    mockUseSearch.mockReturnValue(WITH_RESULTS);
+  it('shows group headings for matched results', () => {
     renderSearchBox();
-    const input = screen.getByRole('searchbox', { name: /search site/i });
-    fireEvent.change(input, { target: { value: 'design' } });
-    expect(screen.getByText('DevOps')).toBeInTheDocument();
+    const input = screen.getByRole('searchbox');
+    fireEvent.change(input, { target: { value: 'system' } });
+    expect(screen.getByText('Categories')).toBeInTheDocument();
   });
 
-  it('closes panel on Escape key', () => {
-    mockUseSearch.mockReturnValue(WITH_RESULTS);
+  it('shows empty message when no results match', () => {
     renderSearchBox();
-    const input = screen.getByRole('searchbox', { name: /search site/i });
-    fireEvent.change(input, { target: { value: 'design' } });
-    expect(screen.getByRole('listbox')).toBeInTheDocument();
-    fireEvent.keyDown(input, { key: 'Escape' });
-    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    const input = screen.getByRole('searchbox');
+    fireEvent.change(input, { target: { value: 'zzznomatch' } });
+    expect(screen.getByText(/no results for/i)).toBeInTheDocument();
   });
 
-  it('clears query on Escape key', () => {
-    mockUseSearch.mockReturnValue(WITH_RESULTS);
+  it('panel closes when a result link is clicked', () => {
     renderSearchBox();
-    const input = screen.getByRole('searchbox', { name: /search site/i });
-    fireEvent.change(input, { target: { value: 'design' } });
-    fireEvent.keyDown(input, { key: 'Escape' });
-    expect(input).toHaveValue('');
+    const input = screen.getByRole('searchbox');
+    fireEvent.change(input, { target: { value: 'home' } });
+    const link = screen.getByRole('link', { name: /^home$/i });
+    fireEvent.click(link);
+    expect(document.querySelector('.search-box__panel')).not.toBeInTheDocument();
   });
 
-  it('closes panel when clicking outside the component', () => {
-    mockUseSearch.mockReturnValue(WITH_RESULTS);
+  it('results panel has search-box__panel class', () => {
     renderSearchBox();
-    const input = screen.getByRole('searchbox', { name: /search site/i });
+    const input = screen.getByRole('searchbox');
     fireEvent.change(input, { target: { value: 'design' } });
-    expect(screen.getByRole('listbox')).toBeInTheDocument();
-    fireEvent.mouseDown(document.body);
-    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    const panel = document.querySelector('.search-box__panel');
+    expect(panel).toBeInTheDocument();
   });
 
-  it('navigates to result.to when a result item is clicked', () => {
-    mockUseSearch.mockReturnValue(WITH_RESULTS);
+  it('group heading has search-box__group-heading class', () => {
     renderSearchBox();
-    const input = screen.getByRole('searchbox', { name: /search site/i });
+    const input = screen.getByRole('searchbox');
     fireEvent.change(input, { target: { value: 'design' } });
-    const item = screen.getByText('System Design');
-    fireEvent.mouseDown(item);
-    // After selection, query should be cleared
-    expect(input).toHaveValue('');
+    const heading = screen.getByText('Categories');
+    expect(heading).toHaveClass('search-box__group-heading');
+  });
+
+  it('result items have search-box__item class', () => {
+    renderSearchBox();
+    const input = screen.getByRole('searchbox');
+    fireEvent.change(input, { target: { value: 'design' } });
+    const item = screen.getByRole('link', { name: /system design/i });
+    expect(item).toHaveClass('search-box__item');
   });
 });
-

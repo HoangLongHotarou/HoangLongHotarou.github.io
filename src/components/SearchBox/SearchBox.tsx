@@ -1,94 +1,94 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSearch } from '../../hooks/useSearch';
-import type { SearchResult } from '../../types';
+import { Link } from 'react-router-dom';
+import { Search } from 'lucide-react';
 
-interface SearchBoxProps {
-  placeholder?: string;
-  className?: string;
+type SearchResult = {
+  label: string;
+  to: string;
+  group: string;
+};
+
+const ALL_RESULTS: SearchResult[] = [
+  { label: 'Home', to: '/', group: 'Pages' },
+  { label: 'System Design', to: '/system-design', group: 'Categories' },
+  { label: 'DevOps Tools', to: '/devops-tools', group: 'Categories' },
+  { label: 'New Updates', to: '/new-updates', group: 'Pages' },
+];
+
+function groupResults(results: SearchResult[]) {
+  const groups: Record<string, SearchResult[]> = {};
+  for (const r of results) {
+    if (!groups[r.group]) groups[r.group] = [];
+    groups[r.group].push(r);
+  }
+  return groups;
 }
 
-export default function SearchBox({ placeholder = 'Search…', className }: SearchBoxProps) {
+export default function SearchBox() {
   const [query, setQuery] = useState('');
-  const { pageResults, categoryResults } = useSearch(query);
-  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const hasResults = pageResults.length > 0 || categoryResults.length > 0;
-  const isOpen = query.length > 0 && hasResults;
-
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Escape') {
-      setQuery('');
-    }
-  }
-
-  function handleSelect(result: SearchResult) {
-    navigate(result.to);
-    setQuery('');
-  }
+  const q = query.trim().toLowerCase();
+  const filtered = q
+    ? ALL_RESULTS.filter((r) => r.label.toLowerCase().includes(q))
+    : [];
+  const grouped = groupResults(filtered);
+  const groupKeys = Object.keys(grouped);
 
   useEffect(() => {
-    function onMouseDown(e: MouseEvent) {
+    function handleClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setQuery('');
+        setOpen(false);
       }
     }
-    document.addEventListener('mousedown', onMouseDown);
-    return () => document.removeEventListener('mousedown', onMouseDown);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
-    <div ref={containerRef} className={`search-box${className ? ` ${className}` : ''}`}>
+    <div className="search-box" ref={containerRef}>
+      <span className="search-box__icon" aria-hidden="true">
+        <Search size={15} />
+      </span>
       <input
         className="search-box__input"
         type="search"
-        aria-label="Search site"
-        placeholder={placeholder}
+        placeholder="Search…"
+        aria-label="Search pages and categories"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={handleKeyDown}
-        autoComplete="off"
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setOpen(true);
+        }}
+        onFocus={() => setOpen(true)}
       />
-      {isOpen && (
-        <ul className="search-box__panel" role="listbox" aria-label="Search results">
-          {pageResults.length > 0 && (
-            <>
-              <li className="search-box__group-heading" role="presentation">Pages</li>
-              {pageResults.map((r) => (
-                <li
-                  key={r.to}
-                  className="search-box__item"
-                  role="option"
-                  aria-selected={false}
-                  onMouseDown={() => handleSelect(r)}
-                >
-                  <span className="search-box__item-label">{r.label}</span>
-                  <span className="search-box__item-sub">{r.sublabel}</span>
-                </li>
-              ))}
-            </>
+      {open && q && (
+        <div className="search-box__panel" aria-label="Search results">
+          {groupKeys.length === 0 ? (
+            <p className="search-box__empty">No results for &ldquo;{query}&rdquo;</p>
+          ) : (
+            groupKeys.map((group) => (
+              <div key={group}>
+                <p className="search-box__group-heading">{group}</p>
+                {grouped[group].map((r) => (
+                  <Link
+                    key={r.to}
+                    to={r.to}
+                    className="search-box__item"
+                    onClick={() => {
+                      setQuery('');
+                      setOpen(false);
+                    }}
+                  >
+                    {r.label}
+                  </Link>
+                ))}
+              </div>
+            ))
           )}
-          {categoryResults.length > 0 && (
-            <>
-              <li className="search-box__group-heading" role="presentation">Categories</li>
-              {categoryResults.map((r) => (
-                <li
-                  key={r.to}
-                  className="search-box__item search-box__item--category"
-                  role="option"
-                  aria-selected={false}
-                  onMouseDown={() => handleSelect(r)}
-                >
-                  <span className="search-box__item-label">{r.label}</span>
-                  <span className="search-box__item-sub">{r.sublabel}</span>
-                </li>
-              ))}
-            </>
-          )}
-        </ul>
+        </div>
       )}
     </div>
   );
 }
-

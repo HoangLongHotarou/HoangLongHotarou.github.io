@@ -115,7 +115,7 @@ export default function AppShell() {
             <span /><span /><span />
           </button>
           <Link to="/" className="topbar__brand">{PROFILE.name}</Link>
-          <SearchBox className="topbar__search" />
+          <SearchBox />
           <ThemeToggle />
         </header>
 
