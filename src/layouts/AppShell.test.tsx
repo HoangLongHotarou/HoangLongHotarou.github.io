@@ -85,6 +85,6 @@ describe('AppShell', () => {
 
   it('topbar contains a SearchBox input', () => {
     renderShell();
-    expect(screen.getByRole('searchbox', { name: /search site/i })).toBeInTheDocument();
+    expect(screen.getByRole('searchbox', { name: /search pages and categories/i })).toBeInTheDocument();
   });
 });

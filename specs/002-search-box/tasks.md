@@ -241,7 +241,7 @@ All tasks follow the required checklist format: `- [ ] [ID] [P?] [Story?] Descri
 
 - [x] T033 [P] Run `npm test` — confirm all tests pass with zero regressions (SC-005)
 - [x] T034 Run `npm run build` — confirm zero TypeScript and ESLint errors
-- [ ] T035 Smoke-test: (1) Confirm no filter input on Home Skills. (2) Type "update" in topbar search → "New Updates" page result appears, click → navigates to `/new-updates`. (3) Type a category name → category result appears, click → Home Blade pre-selects that category.
+- [x] T035 Smoke-test: (1) Confirm no filter input on Home Skills. (2) Type "update" in topbar search → "New Updates" page result appears, click → navigates to `/new-updates`. (3) Type a category name → category result appears, click → Home Blade pre-selects that category.
 
 ---
 
