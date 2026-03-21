@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle';
+import SearchBox from '../components/SearchBox/SearchBox';
 import { PROFILE } from '../data/profile';
 
 type NavLeaf = { type: 'link'; label: string; to: string; icon?: LucideIcon };
@@ -114,6 +115,7 @@ export default function AppShell() {
             <span /><span /><span />
           </button>
           <Link to="/" className="topbar__brand">{PROFILE.name}</Link>
+          <SearchBox />
           <ThemeToggle />
         </header>
 
